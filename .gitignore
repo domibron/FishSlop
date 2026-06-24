@@ -6,6 +6,9 @@
 # See: https://github.com/github/gitignore/tree/main/Global
 #
 
+# FUCK YOU PRO BUILDER! DIE!
+ProjectSettings/Packages/com.unity.probuilder/Settings.json
+
 # FMOD
 
 # Never ignore DLLs in the FMOD subfolder.
