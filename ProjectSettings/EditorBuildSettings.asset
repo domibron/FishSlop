@@ -6,7 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Testing/OutdoorsScene.unity
-    guid: 8124e5870f4fd4c779e7a5f994e84ad1
+    path: Assets/Scenes/BootStrap/BootStrap.unity
+    guid: cace9ce15bcd6924bab76afab38e5bb0
+  - enabled: 1
+    path: Assets/Scenes/MENUS/MainMenu.unity
+    guid: ecde360675212ac46a52b8628c8698cb
+  - enabled: 1
+    path: Assets/Scenes/Levels/Room.unity
+    guid: b626d8967290d1844b856937b5608611
+  - enabled: 1
+    path: Assets/Scenes/Levels/Game.unity
+    guid: eb2fb009f42afaa418c7f3d4a13c689a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
