@@ -19,10 +19,13 @@ public class Movement : NetworkBehaviour
     [SerializeField]
     Transform cameraFollow;
 
+    CapsuleCollider cc;
+
     void Awake()
     {
         networkIdentity = GetComponent<NetworkIdentity>();
         rb = GetComponent<Rigidbody>();
+        cc = GetComponent<CapsuleCollider>();
 
         // Note: net ID does not get assigned on awake.
     }
@@ -61,13 +64,18 @@ public class Movement : NetworkBehaviour
         cameraFollow.localRotation = Quaternion.Euler(localX, 0, 0);
 
         globalRotX = localX;
+
+        if (Input.GetKeyDown(KeyCode.Space) && Physics.Raycast(transform.position, -transform.up, (cc.height * 0.5f) + 0.2f))
+        {
+            rb.AddForce(transform.up * 3f, ForceMode.Impulse);
+        }
     }
 
 
-    private void OnLookXChanged(float oVal, float nVal)
+    private void OnLookXChanged(float oldVal, float newVal)
     {
         if (networkIdentity.isOwned) return;
 
-        cameraFollow.localRotation = Quaternion.Euler(nVal, 0, 0);
+        cameraFollow.localRotation = Quaternion.Euler(newVal, 0, 0);
     }
 }
