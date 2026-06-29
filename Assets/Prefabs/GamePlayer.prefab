@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8076564987035560987}
   - component: {fileID: 3200663011093601036}
   - component: {fileID: -8405195066681342099}
+  - component: {fileID: -7641916977723209603}
   m_Layer: 6
   m_Name: GamePlayer
   m_TagString: Player
@@ -156,6 +157,24 @@ MonoBehaviour:
   syncInterval: 0
   clientOnly: {fileID: 3830469032001157700}
   cameraFollow: {fileID: 6740494738600934217}
+--- !u!114 &-7641916977723209603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2797010261654938623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69f3f58e886b8f347bb87782428fa35c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interact
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 183
 --- !u!1 &3119347213531183371
 GameObject:
   m_ObjectHideFlags: 0

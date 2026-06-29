@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Movement : NetworkBehaviour
 {
-    NetworkIdentity networkIdentity;
-
     Rigidbody rb;
 
     [SerializeField]
@@ -23,7 +21,7 @@ public class Movement : NetworkBehaviour
 
     void Awake()
     {
-        networkIdentity = GetComponent<NetworkIdentity>();
+        // networkIdentity = GetComponent<NetworkIdentity>();
         rb = GetComponent<Rigidbody>();
         cc = GetComponent<CapsuleCollider>();
 
@@ -33,17 +31,20 @@ public class Movement : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (!networkIdentity.isOwned)
+        if (!isOwned)
         {
             Destroy(clientOnly);
             return;
         }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!networkIdentity.isOwned)
+        if (!isOwned)
         {
             //print("Not Owned");
             return;
@@ -53,7 +54,10 @@ public class Movement : NetworkBehaviour
 
         moveDir *= 3f;
 
-        rb.linearVelocity = new Vector3(moveDir.x, rb.linearVelocity.y, moveDir.z);
+        if (!rb.isKinematic)
+        {
+            rb.linearVelocity = new Vector3(moveDir.x, rb.linearVelocity.y, moveDir.z);
+        }
 
         Vector2 mouseDir = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
 
@@ -67,14 +71,14 @@ public class Movement : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && Physics.Raycast(transform.position, -transform.up, (cc.height * 0.5f) + 0.2f))
         {
-            rb.AddForce(transform.up * 3f, ForceMode.Impulse);
+            rb.AddForce(transform.up * 5f, ForceMode.VelocityChange);
         }
     }
 
 
     private void OnLookXChanged(float oldVal, float newVal)
     {
-        if (networkIdentity.isOwned) return;
+        if (isOwned) return;
 
         cameraFollow.localRotation = Quaternion.Euler(newVal, 0, 0);
     }
