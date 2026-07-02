@@ -52,7 +52,14 @@ public class Movement : NetworkBehaviour
 
         Vector3 moveDir = transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical");
 
-        moveDir *= 3f;
+        float speed = 3f;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = 10f;
+        }
+
+        moveDir *= speed;
 
         if (!rb.isKinematic)
         {
@@ -68,6 +75,8 @@ public class Movement : NetworkBehaviour
         cameraFollow.localRotation = Quaternion.Euler(localX, 0, 0);
 
         globalRotX = localX;
+
+
 
         if (Input.GetKeyDown(KeyCode.Space) && Physics.Raycast(transform.position, -transform.up, (cc.height * 0.5f) + 0.2f))
         {

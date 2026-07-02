@@ -1,7 +1,7 @@
 using Mirror;
 using UnityEngine;
 
-public class ParentPlayer : MonoBehaviour
+public class ParentPlayer : NetworkBehaviour
 {
     [SerializeField]
     Transform targetParent;
@@ -12,7 +12,8 @@ public class ParentPlayer : MonoBehaviour
         {
             if (other.gameObject.GetComponent<NetworkIdentity>().isOwned)
             {
-                other.transform.parent = targetParent;
+                // other.transform.parent = targetParent;
+                CmdParentPlayer(other.transform, targetParent);
             }
         }
     }
@@ -23,8 +24,16 @@ public class ParentPlayer : MonoBehaviour
         {
             if (other.gameObject.GetComponent<NetworkIdentity>().isOwned)
             {
-                other.transform.parent = null;
+                // other.transform.parent = null;
+                CmdParentPlayer(other.transform, targetParent);
             }
         }
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdParentPlayer(Transform player, Transform parent)
+    {
+        if (player == null) return;
+        player.parent = parent;
     }
 }

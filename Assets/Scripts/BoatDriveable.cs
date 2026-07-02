@@ -9,6 +9,13 @@ public class BoatDriveable : NetworkBehaviour, IInteractable
 
     Rigidbody rb;
 
+    float targetFloat_TEMP = -4;
+    float leniency = 0.2f;
+
+    float sinkRate = 100;
+    float floatRate = 100;
+
+
     void Awake()
     {
         rb = GetComponentInParent<Rigidbody>();
@@ -42,6 +49,29 @@ public class BoatDriveable : NetworkBehaviour, IInteractable
 
             rb.MoveRotation(rb.transform.rotation * Quaternion.AngleAxis(moveVec.x * 5f * Time.fixedDeltaTime, rb.transform.up));
         }
+
+        if (!isClient || isServer)
+        {
+            BalanceBoat();
+        }
+    }
+
+    [ServerCallback]
+    private void BalanceBoat()
+    {
+        if (rb.transform.position.y < targetFloat_TEMP - leniency)
+        {
+            rb.AddForce(Vector3.up * floatRate * Time.fixedDeltaTime, ForceMode.VelocityChange);
+        }
+        else if (rb.transform.position.y > targetFloat_TEMP + leniency)
+        {
+            rb.AddForce(Vector3.down * sinkRate * Time.fixedDeltaTime, ForceMode.VelocityChange);
+        }
+        else
+        {
+            // remove % of the vel.
+            rb.AddForce(new Vector3(0, -rb.linearVelocity.y * 0.9f * (Time.fixedDeltaTime * 4f), 0), ForceMode.VelocityChange);
+        }
     }
 
     public void Interact(GameObject playerObject)
@@ -58,7 +88,7 @@ public class BoatDriveable : NetworkBehaviour, IInteractable
         {
             oldPlayer.GetComponent<Rigidbody>().isKinematic = false;
 
-            oldPlayer.transform.position = transform.position + Vector3.up;
+            oldPlayer.transform.position = transform.position + (transform.up * 2f) + (transform.forward * -1f);
         }
 
         if (newPlayer == null)
@@ -69,7 +99,7 @@ public class BoatDriveable : NetworkBehaviour, IInteractable
         {
             newPlayer.GetComponent<Rigidbody>().isKinematic = true;
 
-            newPlayer.transform.position = transform.position;
+            newPlayer.transform.position = transform.position + (transform.up * 1f) + (transform.forward * -1f);
 
             newPlayer.transform.rotation = transform.rotation;
         }
